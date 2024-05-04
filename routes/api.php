@@ -39,7 +39,9 @@ Route::get('/categories-custom', function () {
 Route::get('/product/{id}', function ($id) {
     $product = Product::find($id);
     $product->load('category');
-    return new \App\Http\Resources\ProductResource($product);
+    return (new \App\Http\Resources\ProductResource($product))
+        ->response()
+        ->header('X-Powered-By', 'Farul Wananda');
 });
 
 Route::get('/products', function() {
