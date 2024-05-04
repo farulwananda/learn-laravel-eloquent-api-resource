@@ -45,3 +45,9 @@ Route::get('/products', function() {
     $products = Product::all();
     return new \App\Http\Resources\ProductCollection($products);
 });
+
+Route::get('/products-paging', function(Request $request) {
+    $page = $request->get('page', 1);
+    $products = Product::paginate(perPage: 2, page: $page);
+    return new \App\Http\Resources\ProductCollection($products);
+});
