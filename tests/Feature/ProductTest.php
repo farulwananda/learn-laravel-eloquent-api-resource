@@ -8,6 +8,7 @@ use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use function PHPUnit\Framework\assertNotNull;
 
 class ProductTest extends TestCase
 {
@@ -57,5 +58,23 @@ class ProductTest extends TestCase
        self::assertNotNull($response->json('links'));
        self::assertNotNull($response->json('meta'));
        self::assertNotNull($response->json('data'));
+    }
+
+    public function testAdditionalMetadata()
+    {
+        $this->seed([CategorySeeder::class, ProductSeeder::class]);
+        $product = Product::first();
+        $response = $this->get("/api/products-debug/$product->id")
+            ->assertStatus(200)
+            ->assertJson([
+                'author' => 'Farul Wananda',
+                'data' => [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                ]
+            ]);
+
+        self:assertNotNull($response->json('server_time'));
     }
 }
