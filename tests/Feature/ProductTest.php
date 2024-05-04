@@ -28,6 +28,7 @@ class ProductTest extends TestCase
                     'name' => $product->category->name,
                 ],
                 'price' => $product->price,
+                'is_expensive' => $product->price > 1000,
                 'created_at' => $product->created_at->toJSON(),
                 'updated_at' => $product->updated_at->toJSON(),
             ]
@@ -41,10 +42,10 @@ class ProductTest extends TestCase
         ->assertStatus(200);
 
     $names = $response->json("data.*.name");
-    for ($i = 1; $i < 5; $i++) {
+    for ($i = 0; $i < 5; $i++) {
         self::assertContains("Product $i of Food", $names);
     }
-    for ($i = 1; $i < 5; $i++) {
+    for ($i = 0; $i < 5; $i++) {
         self::assertContains("Product $i of Gadget", $names);
     }
   }

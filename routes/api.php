@@ -38,11 +38,13 @@ Route::get('/categories-custom', function () {
 
 Route::get('/product/{id}', function ($id) {
     $product = Product::find($id);
+    $product->load('category');
     return new \App\Http\Resources\ProductResource($product);
 });
 
 Route::get('/products', function() {
-    $products = Product::all();
+//    $products = Product::all();
+    $products = Product::with('category')->get();
     return new \App\Http\Resources\ProductCollection($products);
 });
 
