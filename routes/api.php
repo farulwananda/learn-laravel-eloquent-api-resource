@@ -24,3 +24,8 @@ Route::get('/categories/{id}', function ($id) {
     $category = Category::find($id);
     return new \App\Http\Resources\CategoryResource($category);
 });
+
+Route::get('/categories', function() {
+    $categories = Category::all();
+    return \App\Http\Resources\CategoryResource::collection($categories);
+});
